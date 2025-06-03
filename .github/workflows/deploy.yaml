@@ -1,0 +1,46 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: Build Image
+        run: docker build -t nathakusuma/auditorium-reservation-frontend:latest .
+
+      - name: Push Image
+        run: |
+          docker login -u nathakusuma -p ${{ secrets.DOCKER_PASSWORD }}
+          docker push nathakusuma/auditorium-reservation-frontend:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v4
+
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          passphrase: ${{ secrets.SERVER_SSH_PASSPHRASE }}
+          script: |
+            cd auditorium-reservation-frontend
+            docker pull nathakusuma/auditorium-reservation-frontend:latest
+            docker stop auditorium-reservation-frontend || true
+            docker rm auditorium-reservation-frontend || true
+            docker run -d --name auditorium-reservation-frontend \
+              --env-file .env \
+              -p $(grep APP_PORT .env | cut -d= -f2):3000 \
+              nathakusuma/auditorium-reservation-frontend:latest
+            docker images -f "dangling=true" -f "reference=nathakusuma/auditorium-reservation-frontend" -q | xargs -r docker rmi

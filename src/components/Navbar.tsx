@@ -15,9 +15,14 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark mb-4">
       <div className="container">
-        <Link className="navbar-brand" to="/">
-          Conference Hub
-        </Link>
+        <Link className="navbar-brand d-flex align-items-center" to="/">
+        <img
+          src="/public/fix.png"
+          alt="Logo"
+          style={{ height: "32px", marginRight: "10px" }}
+        />
+        Conference Hub
+      </Link>
         <button
           className="navbar-toggler"
           type="button"

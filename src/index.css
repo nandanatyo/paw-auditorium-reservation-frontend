@@ -30,11 +30,15 @@ body {
 }
 
 .navbar-dark {
-  background-color: rgba(0, 0, 0, 0.7) !important;
+  background-color: rgba(35, 46, 64, 1) !important;
+}
+
+.navbar .nav-link {
+  font-weight: 400;
 }
 
 footer.bg-dark {
-  background-color: rgba(0, 0, 0, 0.7) !important;
+  background-color: rgba(35, 46, 64, 1) !important;
 }
 
 .btn-primary {

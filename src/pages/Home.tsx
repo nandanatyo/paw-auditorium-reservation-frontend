@@ -23,7 +23,7 @@ const Home = () => {
           order: "asc",
           include_past: false,
         });
-        setUpcomingConferences(response.conferences);
+        setUpcomingConferences(response.conferences ?? []);
         setError(null);
       } catch (err) {
         console.error("Failed to fetch upcoming conferences:", err);

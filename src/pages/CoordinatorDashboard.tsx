@@ -333,7 +333,7 @@ const CoordinatorDashboard = () => {
                               </Button>
                               <Link to={`/proposals/${proposal.id}/edit`}>
                                 <Button variant="outline-primary" size="sm">
-                                  Edit
+                                  Detail
                                 </Button>
                               </Link>
                             </div>

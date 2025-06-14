@@ -64,5 +64,6 @@ footer.bg-dark {
 }
 
 .badge.bg-primary {
+  color:rgba(0, 0, 0, 0.8) !important;
   background-color: whitesmoke !important;
 }

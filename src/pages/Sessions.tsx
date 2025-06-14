@@ -31,11 +31,11 @@ const Sessions = () => {
   }, [loadConferences]);
 
   const categories = Array.from(
-    new Set(conferences.map((conference) => conference.title.split(" ")[0]))
+  new Set((conferences ?? []).map((conference) => conference.title.split(" ")[0]))
   );
 
   useEffect(() => {
-    const filtered = conferences.filter((conference) => {
+    const filtered = (conferences ?? []).filter((conference) => {
       const matchesSearch =
         conference.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         conference.description
@@ -106,7 +106,7 @@ const Sessions = () => {
             <Col md={6} lg={4} className="mb-4" key={conference.id}>
               <Card className="h-100">
                 <Card.Header>
-                  <Badge bg="primary" className="me-2">
+                  <Badge bg="primary" className="me-2 badge-category">
                     {conference.title.split(" ")[0]}{" "}
                     {/* Using first word as category for demo */}
                   </Badge>

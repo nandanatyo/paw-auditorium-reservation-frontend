@@ -14,6 +14,51 @@ import { useConference } from "../contexts/conference/ConferenceProvider";
 import { Conference } from "../types";
 import { formatDate } from "../utils/date";
 
+const getSessionTimeStatus = (
+  startsAt: string,
+  endsAt: string
+): "ongoing" | "future" | "past" => {
+  const now = new Date();
+  const startTime = new Date(startsAt);
+  const endTime = new Date(endsAt);
+
+  if (now >= startTime && now <= endTime) {
+    return "ongoing";
+  } else if (now < startTime) {
+    return "future";
+  } else {
+    return "past";
+  }
+};
+
+const getSessionTimeBadge = (startsAt: string, endsAt: string) => {
+  const status = getSessionTimeStatus(startsAt, endsAt);
+
+  switch (status) {
+    case "ongoing":
+      return <Badge bg="success">Live</Badge>;
+    case "future":
+      return <Badge bg="primary">Upcoming</Badge>;
+    case "past":
+      return <Badge bg="secondary">Past</Badge>;
+    default:
+      return <Badge bg="secondary">Unknown</Badge>;
+  }
+};
+
+const getApprovalStatusBadge = (status: string) => {
+  switch (status) {
+    case "pending":
+      return <Badge bg="warning">Pending Review</Badge>;
+    case "approved":
+      return <Badge bg="success">Approved</Badge>;
+    case "rejected":
+      return <Badge bg="danger">Rejected</Badge>;
+    default:
+      return <Badge bg="secondary">Unknown</Badge>;
+  }
+};
+
 const Sessions = () => {
   const { conferences, isLoading, error, loadConferences } = useConference();
   const [filteredSessions, setFilteredSessions] = useState<Conference[]>([]);
@@ -31,7 +76,9 @@ const Sessions = () => {
   }, [loadConferences]);
 
   const categories = Array.from(
-  new Set((conferences ?? []).map((conference) => conference.title.split(" ")[0]))
+    new Set(
+      (conferences ?? []).map((conference) => conference.title.split(" ")[0])
+    )
   );
 
   useEffect(() => {
@@ -106,12 +153,14 @@ const Sessions = () => {
             <Col md={6} lg={4} className="mb-4" key={conference.id}>
               <Card className="h-100">
                 <Card.Header>
-                  <Badge bg="primary" className="me-2 badge-category">
-                    {conference.title.split(" ")[0]}{" "}
-                    {/* Using first word as category for demo */}
-                  </Badge>
+                  {getSessionTimeBadge(
+                    conference.starts_at,
+                    conference.ends_at
+                  )}
                   {(conference.seats_taken || 0) >= conference.seats && (
-                    <Badge bg="danger">Full</Badge>
+                    <Badge bg="danger" className="ms-2">
+                      Full
+                    </Badge>
                   )}
                 </Card.Header>
                 <Card.Body>

@@ -141,7 +141,6 @@ const MySessions = () => {
             <Col md={6} className="mb-4" key={session.id}>
               <Card>
                 <Card.Header className="d-flex justify-content-between align-items-center">
-                  <Badge bg="primary">{session.title.split(" ")[0]}</Badge>
                   <Badge
                     bg={activeTab === "upcoming" ? "success" : "secondary"}>
                     {activeTab === "upcoming" ? "Upcoming" : "Past"}

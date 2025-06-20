@@ -331,9 +331,9 @@ const CoordinatorDashboard = () => {
                                 }>
                                 Reject
                               </Button>
-                              <Link to={`/proposals/${proposal.id}/edit`}>
+                              <Link to={`/sessions/${proposal.id}`}>
                                 <Button variant="outline-primary" size="sm">
-                                  Detail
+                                  Details
                                 </Button>
                               </Link>
                             </div>
